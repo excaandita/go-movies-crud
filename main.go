@@ -1,10 +1,11 @@
 package main
 
 import (
-	"crypto/rand"
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
+	"mux"
 	"net/http"
 	"strconv"
 )
@@ -55,7 +56,7 @@ func createMovie(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
 	var movie Movie
 	_ = json.NewDecoder(r.Body).Decode(&movie)
-	movie.ID = strconv.Itoa(rand.Int(100000000))
+	movie.ID = strconv.Itoa(rand.Intn(10000000))
 	movies = append(movies, movie)
 
 	json.NewEncoder(w).Encode(movie)
@@ -80,7 +81,7 @@ func updateMovie(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	r := mux.newRouter()
+	r := mux.NewRouter()
 
 	movies = append(movies, Movie{
 		ID:       "1",
